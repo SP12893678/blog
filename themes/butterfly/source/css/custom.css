@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+:root{
+    --custom-main-color:#49b1f5;
+    --custom-main-color-rgb:73,177,245;
+}
+
+body,
+.gitcalendar {
+    font-family: 'Titillium Web','Noto Sans TC',sans-serif;
+}
+
+#site-title{
+    opacity: 0.7;
+}
+
+#site-title,#site-subtitle{
+    text-shadow: 0.1rem 0.1rem 0.2rem rgb(0 0 0 / 40%) !important;
+}
+
+#menus .fas {
+    -webkit-animation: float 2s linear infinite;
+    animation: float 2s linear infinite
+}
+
+
+@-webkit-keyframes float {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    50% {
+        -webkit-transform: translateY(-6px);
+        transform: translateY(-6px)
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+
+@keyframes float {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    50% {
+        -webkit-transform: translateY(-6px);
+        transform: translateY(-6px)
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+
+/* 側邊欄目錄 */
+#aside-content #card-toc .toc-content .toc-link.active {
+    font-weight: 700;
+    border-radius: 8px;
+    color: #fff;
+    border-left-color: var(--custom-main-color);
+    background-color: var(--custom-main-color);
+    box-shadow: 0 8px 12px -3px rgba(var(--custom-main-color-rgb),0.5);
+}
