@@ -5,11 +5,16 @@
 :root{
     --custom-main-color:#49b1f5;
     --custom-main-color-rgb:73,177,245;
+    --global-font-size:  17px;
 }
 
 body,
 .gitcalendar {
     font-family: 'Titillium Web','Noto Sans TC',sans-serif;
+}
+
+*::selection {
+    background: var(--custom-main-color);
 }
 
 #site-title{
