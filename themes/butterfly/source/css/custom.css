@@ -8,6 +8,18 @@
     --global-font-size:  17px;
 }
 
+@media only screen and (max-width:600px) {
+    :root{
+        --global-font-size:  14px;
+    }
+    h2{
+        font-size: 18px;
+    }
+    h3{
+        font-size: 16px;
+    }
+}
+
 body,
 .gitcalendar {
     font-family: 'Titillium Web','Noto Sans TC',sans-serif;
@@ -69,4 +81,29 @@ body,
     border-left-color: var(--custom-main-color);
     background-color: var(--custom-main-color);
     box-shadow: 0 8px 12px -3px rgba(var(--custom-main-color-rgb),0.5);
+}
+
+.note{
+    color: #747474 !important;
+}
+
+.code pre, .gutter pre{
+    font-size: 14px !important;
+}
+
+code{
+    font-size: 14px !important;
+}
+
+.note:not(.no-icon)::before {
+    top: calc(50%) !important;
+    transform: translateY(-50%) !important;
+}
+
+.avatar-img img:hover {
+    -webkit-transform: unset !important;
+    -moz-transform: unset !important;
+    -o-transform: unset !important;
+    -ms-transform: unset !important;
+    transform: unset !important;
 }
