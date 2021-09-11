@@ -2,7 +2,7 @@ const gulp = require('gulp')
 const cleanCSS = require('gulp-clean-css')
 const htmlmin = require('gulp-html-minifier-terser')
 const htmlclean = require('gulp-htmlclean')
-// const imagemin = require('gulp-imagemin')
+const imagemin = require('gulp-imagemin')
 const workbox = require("workbox-build");
 // gulp-terser (如果使用 gulp-terser,把下面的//去掉)
 // const terser = require('gulp-terser');
@@ -76,12 +76,12 @@ gulp.task('minify-html', () => {
 // 壓縮 public/uploads 目錄內圖片
 gulp.task('minify-images', async () => {
   gulp.src('./public/img/**/*.*')
-    // .pipe(imagemin({
-    //   optimizationLevel: 5, //類型：Number  預設：3  取值範圍：0-7（優化等級）
-    //   progressive: true, //類型：Boolean 預設：false 無失真壓縮jpg圖片
-    //   interlaced: false, //類型：Boolean 預設：false 隔行掃描gif進行渲染
-    //   multipass: false, //類型：Boolean 預設：false 多次優化svg直到完全優化
-    // }))
+    .pipe(imagemin({
+      optimizationLevel: 5, //類型：Number  預設：3  取值範圍：0-7（優化等級）
+      progressive: true, //類型：Boolean 預設：false 無失真壓縮jpg圖片
+      interlaced: false, //類型：Boolean 預設：false 隔行掃描gif進行渲染
+      multipass: false, //類型：Boolean 預設：false 多次優化svg直到完全優化
+    }))
     .pipe(gulp.dest('./public/img'));
 });
 
