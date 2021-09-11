@@ -6,7 +6,8 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "server": "hexo server",
+    "public": "hexo cl && hexo g && gulp"
   },
   "hexo": {
     "version": "5.4.0"
@@ -16,6 +17,7 @@
     "gulp-html-minifier-terser": "^6.0.1",
     "hexo": "^5.0.0",
     "hexo-admin": "^2.3.0",
+    "hexo-deployer-git": "^3.0.0",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
     "hexo-generator-index": "^2.0.0",
@@ -35,6 +37,8 @@
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-htmlclean": "^2.7.22",
-    "gulp-uglify": "^3.0.2"
+    "gulp-imagemin": "^8.0.0",
+    "gulp-uglify": "^3.0.2",
+    "workbox-build": "^6.3.0"
   }
 }

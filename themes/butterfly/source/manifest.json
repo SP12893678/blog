@@ -1,0 +1,39 @@
+{
+    "theme_color": "#2196f3",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "name": "JunHong's Blog",
+    "short_name": "JunHong",
+    "description": "The website is for JunHong's blog.",
+    "icons": [
+        {
+          "src": "img/logo/icon-72x72.png",
+          "sizes": "72x72",
+          "type": "image/png"
+        },
+        {
+          "src": "img/logo/icon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        },
+        {
+          "src": "img/logo/icon-144x144.png",
+          "sizes": "144x144",
+          "type": "image/png"
+        },
+        {
+          "src": "img/logo/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+            "src": "img/logo/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+          }
+      ],
+      "splash_pages": null
+}
+
