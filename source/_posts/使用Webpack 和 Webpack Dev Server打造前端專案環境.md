@@ -1,4 +1,4 @@
-title: 使用Webpack & Webpack Dev Server打造前端專案環境
+title: 使用Webpack 和 Webpack Dev Server打造前端專案環境
 description: 隨著技術演進...前端不再是單純html、css、js，為了符合各種需求，開始開發各種框架、預處理器引進專案內，並使用模組化方式開發專案。然而瀏覽器並無法直接辨識這樣的專案內容，因此需要透過webpack等前端打包工具使用編譯的方式轉換成瀏覽器看得懂的內容。
 
 categories:
