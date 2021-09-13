@@ -8,11 +8,11 @@ tags:
   - webpack
   - webpack-dev-server
   - npm
-keywords: webpack,webpack-dev-server,前端打包工具
+keywords: webpack,webpack-dev-server,前端打包工具,webpack 教學
 date: 2021-09-06 12:00:00
 copyright_info: 此文章版權歸JUN-HONG所有，如有轉載，請註明來自原作者
 
-cover: /img/banner_webpack_webpack-dev-server.jpg
+cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_webpack_webpack-dev-server.jpg
 ---
 
 ## 前言
@@ -23,7 +23,7 @@ Webpack 是一個前端模組打包(module bundler)工具，提供模組化開�
 
 如下圖：
 
-![webpack.jpg](/img/webpack.jpg)
+![webpack.jpg](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack.jpg)
 
 ### 為什麼要使用Webpack等前端打包工具?
 
@@ -34,7 +34,7 @@ Webpack 是一個前端模組打包(module bundler)工具，提供模組化開�
 除了webpack當然還有許多打包工具，如gulp、parcel、esbuild等等，每個工具都有它的特點，而webpack是目前筆者在開發上順手的工具。
 
 下圖為 [state of js](https://2020.stateofjs.com/en-US/technologies/build-tools/) 的Build Tools調查，可以看到webpack至今使用率非常高。
-![2020-build-tool-rank.jpg](/img/2020-build-tool-rank.jpg)
+![2020-build-tool-rank.jpg](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/2020-build-tool-rank.jpg)
 
 ### 什麼是Webpack Dev Server?
 
@@ -163,7 +163,7 @@ npm install webpack@4.46.0 webpack-dev-server@3.11.2 webpack-cli@3.3.12 webpack-
 
 1. 先建立src目錄，並且在src目錄建立index.js，如下圖：
 
-    ![Untitled](/img/webpack-src-index.jpg)
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-src-index.jpg)
 
 2. 在package.json新增一條scripts，如下：(記得上一行的逗號)
 
@@ -197,7 +197,7 @@ npm install webpack@4.46.0 webpack-dev-server@3.11.2 webpack-cli@3.3.12 webpack-
 
     若輸入結果如下圖就成功啦
 
-    ![Untitled](/img/webpack-install-output.jpg)
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-install-output.jpg)
 
 ## 依 dev 和 prod 環境分別撰寫webpack設定檔
 
@@ -335,9 +335,9 @@ npm run dev
 
 執行後若如下圖表示成功了，但由於我們沒有設置`index.html` 所以只能看到根目錄
 
-![Untitled](/img/webpack-dev-compile-output.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-dev-compile-output.jpg)
 
-![Untitled](/img/webpack-dev-compile-demo.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-dev-compile-demo.jpg)
 
 {% note warning %}
 關於html部份，由於進入點(entry)的index.js不用把html引入，反而是html需要引入index.js。因此我們會需要html-webpack-plugin套件幫助我們編譯後直接幫我們的html樣本引入編譯好的js檔案。
@@ -393,7 +393,7 @@ module.exports = {
 
 如此我們再次執行就會得到空白的畫面以及console面板的Hello World!
 
-![Untitled](/img/webpack-dev-server-console.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-dev-server-console.jpg)
 
 <!-- endtab -->
 
@@ -404,7 +404,7 @@ npm run build
 ```
 
 沒意外的話，輸入資料夾dist中應該會有main.bundle.js以及剛剛加入的plugin所幫我們產生的index.html
-![Untitled](/img/webpack-html-plugin.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-html-plugin.jpg)
 <!-- endtab -->
 {% endtabs %}
 
@@ -416,7 +416,7 @@ npm run build
 ### 為什麼要添加模組編譯規則
 
 事實上webpack並不知道你的靜態資源要怎麼編譯，而且它沒辦法獨立完成這項作業。在下圖可以看到我添加了css檔案並在index.js引入，編譯後出現錯誤訊息。
-![Untitled](/img/webpack-css-fail-output.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-css-fail-output.jpg)
 
 
 {% note danger flat %}
@@ -537,7 +537,7 @@ module.exports = merge(commonWebpackConfig, {
 
 若成功的話，在開發環境的網頁上可以看到我們套用的CSS囉！在生產環境則在dist/main.css可以看到壓縮後的css
 
-![Untitled](/img/webpack-css-min-compile.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-css-min-compile.jpg)
 
 ### 添加JS編譯規則
 
@@ -754,7 +754,7 @@ module.exports = merge(commonWebpackConfig, {
 
 如下圖可以看到原始資產中有3張圖片，但輸出資料夾只有2張，因為有一張圖片大小僅5KB，而我們在url-loader設置的限制為10KB，因此被以base64編碼寫至main.bundle.js
 
-![Untitled](/img/webpack-image-loader-prod-output.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-image-loader-prod-output.jpg)
 
 {% note warning %}
 file-loader處理檔案物件，也可以應用在音訊、字型、文件檔等等
@@ -765,4 +765,4 @@ url-loader也是相同概念，不過要注意大小限制，過度使用反而�
 看完可以發現並沒有什麼太複雜的概念，webpack就像一個容器讓我們組裝所需的內容, 而只要知道各個零件的用途與設置就可以添加各個需求。不過webpack依然還有須多可以研究的，例如考量網頁效能與體驗上如何最佳化編譯靜態資源將會是很重要的課題。
 
 最後附上本次實作的程式碼
-{% link webpack-dev-server-learning, https://github.com/SP12893678/webpack-dev-server-learning, /img/github.svg %}
+{% link webpack-dev-server-learning, https://github.com/SP12893678/webpack-dev-server-learning, https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/github.svg %}
