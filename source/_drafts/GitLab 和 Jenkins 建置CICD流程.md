@@ -43,8 +43,20 @@ cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_jenkins_C
     - Docker & Docker Compose安裝
     - 開源持續整合CI工具「 Jenkins 」安裝
     - 開源程式碼分析系統「 SonarQube 」安裝
-- Jenkins環境設置
-
+    - Jenkins 環境設置 (插件安裝與設定)
+- Jenkins 建立專案建置流程
+    - 設置程式碼管理(SCM)
+    - 設定建置觸發程序(Trigger)
+    - 設定建置流程(Build)
+    - 設置建置後動作(After Build)
+    - 執行建置專案
+    - Webhook自動化執行
+- Pipeline形式專案建置流程
+    - 撰寫Jenkins pipeline配置檔
+- Jenkins分散式建構與佈署
+    - 節點環境準備
+    - 新增節點
+    - 在pipeline上指定節點執行
 
 ## 流程分析
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-process.jpg)
@@ -208,7 +220,7 @@ sudo chown -R 1000:1000 ./jenkins
 因此在瀏覽器中打開對應的port可以看到服務的頁面
 
 - jenkins：localhost:8080
-- sonarqube: localhost:9000
+- sonarqube：localhost:9000
 
 {% note info flat %}
 **Sonarqube預設帳號密碼**
@@ -223,7 +235,7 @@ default password: admin
 
 將檔案裡的密碼貼上後就進入到下個頁面啦
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-unlock.jpg)
-Jenkins提供2種方式客製化自己的Jenkins，分別是”安裝建議的插件”和”自己選擇插件安裝"，兩者看個人喜好選擇，之後都可以再安裝或刪除個別插件
+Jenkins提供2種方式客製化自己的Jenkins，分別是{% label 安裝建議的插件 %} 和 {% label 自己選擇插件安裝 %}，兩者看個人喜好選擇，之後都可以再安裝或刪除個別插件
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-install-suggest.jpg)
 這邊我選擇安裝建議的插件，在下圖可以看到它幫我們先安裝Git、Github、Gradle、Pipleline、Mailer等插件
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-install-suggest-ing.jpg)
@@ -248,22 +260,27 @@ jenkins以及插件可能會需要用到，提供給使用者正確的網址路�
 
 {% tabs Jenkins 各插件安裝 %}
 <!-- tab GitLab -->
+GitLab插件支援使用gitlab webhook來觸發建置程序
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-install-gitlab.jpg)
 <!-- endtab -->
 
 <!-- tab SonarQube -->
+SonarQube插件支援建置時，掃描程式碼分析程式碼品質與安全
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-install-sonarqub.jpg)
 <!-- endtab -->
 
 <!-- tab Jacoco -->
+Jacoco插件更方便顯示程式碼覆蓋率報告
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-install-jacoco.jpg)
 <!-- endtab -->
 
 <!-- tab OWASP Dependency Check -->
+OWASP Dependency Check插件能掃描分析專案依賴危險
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-install-dependency-check.jpg)
 <!-- endtab -->
 
 <!-- tab Slack -->
+Slack插件可以透過建置完成發送通知至Slack上
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-install-slack.jpg)
 <!-- endtab -->
 {% endtabs %}
@@ -287,17 +304,17 @@ jenkins以及插件可能會需要用到，提供給使用者正確的網址路�
 {% endtabs %}
 
 
-### 建立專案建置流程
+## 建立專案建置流程
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-homepage-click-new-item.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-add-new-item.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-1.jpg)
-#### 設置程式碼管理(SCM)
+### 設置程式碼管理(SCM)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm-credentials.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm-full.jpg)
-#### 設定建置觸發程序
+### 設定建置觸發程序(Trigger)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-gradle.jpg)
-#### 設定建置流程
+### 設定建置流程(Build)
 在建置流程中我希望依序執行 build → Jacoco(unit test、coverage rate) → Deoendency check → sonarqube
 這裡我使用java gradle專案，選擇呼叫gradle script(在先前初始化時選擇的建議安裝內有包含gradle插件)
 
@@ -320,7 +337,7 @@ jenkins以及插件可能會需要用到，提供給使用者正確的網址路�
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-dependency-check.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-dependency-check-setting.jpg)
 
-#### 設置建置後動作
+### 設置建置後動作(After Build)
 在完成建置後，我們可以在建置後動作產生一些報告或者通知
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-jacoco.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-jacoco-setting.jpg)
@@ -365,7 +382,7 @@ GitLab webhook設定
 若使用Gitlab webhook發送的方式觸發的話，可以在該次建置的觸發者，Slack上也可以看到
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-gitlab-jenkins-run-status.jpg)
 
-### Pipeline形式專案建置流程
+## Pipeline形式專案建置流程
 剛才我們使用Free-Style的形式建置專案流程，其中可以透過在Jenkins上UI點選輸入形式自定義內容。那Pipeline形式有何不同呢? Pipeline有2個不錯的特點
 
 1. 程式碼形式簡潔易讀的設定內容
@@ -380,7 +397,7 @@ GitLab webhook設定
 這邊只需要設置Git專案的資訊即可
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-setting-scm.jpg)
 
-#### 撰寫Jenkins pipeline配置檔
+### 撰寫Jenkins pipeline配置檔
 首先Jenkins pipeline配置檔預設是專案根目錄的Jenkinsfile檔案，如果想更換位置可以在Jenkins的UI上設定
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-jenkinsfile-setting.jpg)
 
@@ -442,13 +459,13 @@ Checkout SCM是可以省略的，因為在Jenkins上我們已經設置了Git專�
 設定完成後push至gitlab上，我們一樣先進行手動建置
 若要Gitlab webwook觸發則須在Jenkins UI設定trigger，畢竟Jenkinsfile在Git上
 
-### Jenkins分散式建構與佈署
+## Jenkins分散式建構與佈署
 
 Jenkins提供新增節點功能，使Jenkins可以將任務派發給其他節點，加快作業執行以及減少Jenkins主機工作負載量(workload)，以確保 Jenkins 可以保持在最佳的運作狀態下。
 
 另外我們也可以在指定節點執行專案內容達到佈署效果
 
-#### 節點環境準備
+### 節點環境準備
 
 我們需要為另一台server準備jenkins的使用者、工作區以及Java8環境
 
@@ -475,7 +492,7 @@ cat ~/.ssh/jenkinsAgent_rsa
 sudo apt-get install openjdk-8-jdk
 ```
 
-#### 新增節點
+### 新增節點
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-add.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new.jpg)
 
@@ -485,7 +502,7 @@ sudo apt-get install openjdk-8-jdk
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-4.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-5.jpg)
 
-#### 在pipeline上指定節點執行
+### 在pipeline上指定節點執行
 
 
 ```bash
@@ -543,10 +560,6 @@ pipeline {
     }
 }
 ```
-
-### 補充：Jenkins插件Open Blue Ocean
-
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/webpack-image-loader-prod-output.jpg)
 
 ## 結語
 
