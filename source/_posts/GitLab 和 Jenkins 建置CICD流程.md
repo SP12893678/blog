@@ -291,92 +291,211 @@ Slack插件可以透過建置完成發送通知至Slack上
 
 {% tabs Jenkins 各插件設定 %}
 <!-- tab SonarQube -->
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-install-slack.jpg)
+**設置Sonarqube Server**
+Jenkins需要知道Sonarqube Server的網址、權限才能串接
+
+首先到管理Jenkins選單頁，並點擊系統設置選項
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-menu.jpg)
+
+找到SonarQube servers區塊，新增sonarqube server
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-server.jpg)
+
+* Name：自訂名稱 (辨識不同server用途)
+* Server URL：docker compose架設的sonarqube server的 URL
+* Server authentication token：sonarqube權限金鑰 (需在sonarqube取得金鑰)
+
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-server-setting.jpg)
+
+**取得sonarqube權限金鑰**
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-sonarqube-security.jpg)
+
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-sonarqube-auth-token.jpg)
+
+**選擇權限驗證種類：Secret text**
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-server-credential.jpg)
+
+**設置Sonarqube Scanner**
+Sonarqube Scanner幫助掃描專案程式碼
+
+在Jenkins管理頁面選擇全域工具設置
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-scanner.jpg)
+
+新增Sonarqube Scanner，並選擇合適的版本
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-scanner-install.jpg)
 <!-- endtab -->
 
 <!-- tab OWASP Dependency Check -->
+在這邊將設置OWASP Dependency Check的版本和名稱
+
+在Jenkins管理頁面選擇全域工具設置
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-scanner.jpg)
+
+新增OWASP Dependency Check，並選擇合適的版本
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-dependency-check-setting.jpg)
 
 <!-- endtab -->
 
 <!-- tab Slack -->
+我們需要從Slack建立機器人，並且取得slack上的網域和金鑰
+
+在Slack新增Jenkins CI應用程式
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins.jpg)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins-install.jpg)
+
+選擇Jenkins機器人發通知的頻道
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins-install-channel.jpg)
+
+Slack上詳細說明了接續設定，其中包含網域和權限
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins-setting.jpg)
+
+
+在Slack設置中要求我們填入工作區網址、權限、預設頻道/成員ID
+設定完成後可以點擊右下的Test Connection測試有無成功，若成功Jenkins bot將發送一則測試訊息至當初設定的Slack頻道上
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-slack-setting.jpg)
+
+測試後Jenkins機器人將發送一則測試消息在頻道上
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-display.jpg)
 
 <!-- endtab -->
 {% endtabs %}
 
 
 ## 建立專案建置流程
+環境設定完了就可以正式進入建立專案建置流程啦！
+
+首先在Jenkins主頁點擊New Item創建項目
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-homepage-click-new-item.jpg)
+
+輸入項目名稱，這邊選擇Freestyle project(提供彈性UI設置)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-add-new-item.jpg)
+
+到設置頁面可以看到上方有6個選項
+1. General：一般設定
+2. Source Code Management：專案程式碼管理，讓Jenkins知道要Checkout的專案，以及分支
+3. Build Triggers：建置觸發條件，除了在UI上手動建置，也可以給予觸發條件，以自動化執行
+4. Build Enviroment：建置環境
+5. Build：建置動作
+6. Post-build Actions：建置"後"動作 (通知、產生報告等等)
+
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-1.jpg)
+
+
 ### 設置程式碼管理(SCM)
+
+在程式碼管理必須設定Git repositories，填入專案網址以及專案權限
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm.jpg)
+
+專案權限設置中可以使用UserName with password種類，輸入GitLab/Github的帳密即可
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm-credentials.jpg)
+
+權限設置好後，原先的紅字錯誤就消失啦
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm-full.jpg)
 ### 設定建置觸發程序(Trigger)
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-gradle.jpg)
+在建置觸發條件中勾選當有push變更至GitLab時觸發，下方提供Push, Merge等事件選擇
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-trigger-gitlab.jpg)
 ### 設定建置流程(Build)
-在建置流程中我希望依序執行 build → Jacoco(unit test、coverage rate) → Deoendency check → sonarqube
-這裡我使用java gradle專案，選擇呼叫gradle script(在先前初始化時選擇的建議安裝內有包含gradle插件)
+在建置流程中我希望依序執行 build → Jacoco(unit test、coverage rate) → SonarQube → Deoendency check 
 
+**設置Gradle**
 
-設置Gradle
+這裡我使用java gradle專案，新增呼叫gradle script(在先前初始化時選擇的建議安裝內有包含gradle插件)
+由於我專案內有gradle wrapper，就不使用Jenkins上的Gradle環境了 (PS. 若需要需前往插件設定新增Gradle版本)
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-gradle.jpg)
 {% note info flat %}
 在gradle build生命週期中test也包含在內(test將執行jacoco的單元測試與覆蓋率)
 {% endnote %}
-
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-sonarqube-scanner.jpg)
-
 {% note info flat %}
 使用maven也有相應的插件，其他語言的專案也可以直接選擇使用Execute shell方式輸入指令方式
 {% endnote %}
 
-設置SonarQube Scanner
+**設置SonarQube Scanner**
+在Gradle build和test完成後會有Java Class檔和jacoco report，接著提供給SonarQube Scanner掃描
+我們需要設定相關參數給Sonarqube Scanner知道
+* sonar.projectKey：專案ID (可自訂)，用來辨識project
+* sonar.projectName：專案名稱，會顯示於sonarqube上
+* sonar.projectVersion：專案版本
+* sonar.sources：專案程式碼來源位置
+* sonar.java.binaries：專案編譯Java Class位置
+* sonar.coverage.jacoco.xmlReportPaths：Jacoco報告路徑
+
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-sonarqube-scanner-properties.jpg)
 
-設置Dependency-Check
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-dependency-check.jpg)
+**設置Dependency-Check**
+Dependency-Check基本上不需要設定，只要在插件設定時有設置好Dependency-Check版本即可
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-build-dependency-check-setting.jpg)
 
 ### 設置建置後動作(After Build)
 在完成建置後，我們可以在建置後動作產生一些報告或者通知
+
+**產生Jacoco報告**
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-jacoco.jpg)
+基本上不需要設定
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-jacoco-setting.jpg)
+
+**產生Dependency-Check報告**
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-dependency-check.jpg)
 
+可以指定Dependency-Check產出的報告檔案路徑
+PS. 基本上在圖形介面上就有報告可以查看
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-dependency-check-setting.jpg)
+
+**發送Slack通知**
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-slack.jpg)
+
+我們在插件設定已經完成串接，這邊只需要勾選觸發條件
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-after-build-slack-setting.jpg)
 
 
 ### 執行建置專案
-完成專案建置設定後，我們目前有2種方式可以觸發專案建置
+完成專案建置設定後，目前有2種方式可以觸發專案建置
 
 1. 手動執行
 2. 透過專案設置的觸發器條件執行，先前設置是當gitlab有push event時
 
 為了確保建置設定沒有出錯，可以先使用手動方式執行
 
-執行後在左下可以看到此次建置的資訊(目前進度以及編號(第幾次執行)等)，若建置完畢後出現紅燈代表失敗；橘燈代表不穩定；綠燈代表成功。
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-status.jpg)
+執行後在左下可以看到此次建置的資訊(目前進度以及編號(第幾次執行)等)，若建置完畢後出現三種結果：
+* 紅燈代表失敗
+* 橘燈代表不穩定
+* 綠燈代表成功
 
 在完成建置後可以點擊建置編號查看此次建置的詳細內容
 
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-status.jpg)
+
 另外在建置的開始與結束我們應該會在Slack收到Jenkins bot的消息，其中Jenkins會通知此次建置的狀態、時間，另外也附上此次專案建置的連結 (或許會有多個專案執行)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-notify-slack.jpg)
+
+在左側選單還有許多內容可以查看，還記得我們剛才設定的其他報告嗎?
+1. Console Output：ˋ整個建置的歷程
+2. Coverage Report：專案覆蓋率報告 (Jacoco)
+3. Dependency-Check：專案依賴檢查報告
+
+
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-record.jpg)
+
+**Coverage Report**
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-record-jacoco.jpg)
+
+**Dependency-Check**
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-record-dependency-check.jpg)
 
-sonarqube則需在專案流程主頁點擊，且詳細內容需至sonarqube伺服器網頁上查看
+**Sonarqube**
+則需在專案流程主頁點擊，且詳細內容需至sonarqube伺服器網頁上查看
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-record-sonarqube.jpg)
+
+在Sonarqube上可以看到專案的bug、漏洞、不良習慣、技術債花費時間等
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-record-sonarqube-server.jpg)
 
 
 如果手動建置有成功的話，可以試試看透過Gitalb webhook觸發
 
-GitLab webhook設定
-
+**GitLab webhook設定**
+首先到GitLab專案頁面上，選擇Setting -> Integrations -> Jenkins CI
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-gitlab-jenkins-webhook.jpg)
+
+這邊填上Jenkins url，注意是domain + port，不需要子路徑喔
+Project name填上Jenkins上新增項目的名稱
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-gitlab-jenkins-webhook-setting.jpg)
 
 若使用Gitlab webhook發送的方式觸發的話，可以在該次建置的觸發者，Slack上也可以看到
@@ -387,10 +506,13 @@ GitLab webhook設定
 
 1. 程式碼形式簡潔易讀的設定內容
 2. 配置檔整合至git專案上，供開發人員在開發專案時即可了解建置流程
+
+**新增項目**
+在新增項目種選擇Pipeline
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-add.jpg)
 
 
-新增後進入設定頁面，會發現Jenkins有提供部分UI設定，主要是給將Pipeline寫在Jenkins上的人使用的，若選擇pipeline配置檔在Git專案上則需要切換選項
+新增後進入設定頁面，會發現Jenkins有提供部分UI設定，主要是給將Pipeline寫在Jenkins上的人使用的或者一些Pipeline設定的選擇，若選擇pipeline配置檔在Git專案上則需要切換選項
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-setting-1.jpg)
 
 
@@ -401,13 +523,12 @@ GitLab webhook設定
 首先Jenkins pipeline配置檔預設是專案根目錄的Jenkinsfile檔案，如果想更換位置可以在Jenkins的UI上設定
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-jenkinsfile-setting.jpg)
 
-撰寫方法如下：
 
-agent是指定執行時的節點...其實Jenkins擁有分散式建構和佈署功能，將任務派發給其他節點工作
-
-stages是設置階段執行內容與環境，我們可以為stage有個暱稱，執行時在Jenkins上可以更直觀看出現在的進度
-
-post是建置後需要執行的步驟，這邊我們可以做報告產出、通知等，另外post提供各種狀態可以附加的動作**always、changed、fixed、regression、aborted、failure、success、unstable、unsuccessful 和 cleanup**
+撰寫方法很簡單，使用大括弧形式並配合關鍵語意即可：
+* pipeline：整個流程的最外層
+* agent：是指定執行時的節點
+* stages：是設置階段執行內容與環境，我們可以為stage有個暱稱，執行時在Jenkins上可以更直觀看出現在的進度
+* post：是建置後需要執行的步驟，這邊我們可以做報告產出、通知等，另外post提供各種狀態可以附加的動作**always、changed、fixed、regression、aborted、failure、success、unstable、unsuccessful 和 cleanup**
 
 
 ```bash
@@ -469,7 +590,7 @@ Jenkins提供新增節點功能，使Jenkins可以將任務派發給其他節點
 
 我們需要為另一台server準備jenkins的使用者、工作區以及Java8環境
 
-新增使用者
+**新增使用者**
 ```bash
 # 新增使用者
 sudo adduser jenkins
@@ -479,6 +600,7 @@ su jenkins
 ```
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-user-add.jpg)
 
+**新增使用者的ssh公私鑰 & 安裝Java 8**
 ```bash
 cd ~/.ssh
 ssh-keygen -f "jenkinsAgent_rsa"
@@ -493,18 +615,35 @@ sudo apt-get install openjdk-8-jdk
 ```
 
 ### 新增節點
+在管理Jenkins頁面點擊管理節點
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-add.jpg)
+
+新增節點
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new.jpg)
 
+輸入節點名稱以及勾選類別
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-1.jpg)
+
+1. Remote root directory：遠端根目錄，就像是Jenkins Home一樣會放置工作區的內容
+2. Usage：使用模式，這邊我是設置只有指定該節點時才使用
+3. Launch method：啟動方式，透過SSH方式
+4. Host：主機IP
+5. Credentials：權限認證，驗證使用SSH方式，附上private key
+6. Host Key Verification Strategy：金鑰認證策略，這邊選擇手動驗證，在Jenkins UI的側邊欄上會有選項要確認
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-2.jpg)
+
+設定完畢後，Jenkins就會開始嘗試連上新的節點，將Jenkins的相關程式安裝至新節點上
+此時可從圖中看到還在啟動中
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-3.jpg)
+
+點擊節點的Log中可以看到節點目前的狀況
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-4.jpg)
+
+啟動完畢後，就可以看到節點的資訊
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-5.jpg)
 
 ### 在pipeline上指定節點執行
-
-
+這裡新增了佈署的stage，並且佈署的stage上指定了deploy-server節點
 ```bash
 pipeline {
     agent any
@@ -562,9 +701,5 @@ pipeline {
 ```
 
 ## 結語
+在整篇中我們可以看到大多都透過UI設定就完成了許多自動化的流程，而透過串接許多工具使流程自動化，就可以讓開發與維運減少成本。另外，若團隊專案有額外需求還可以客製化自己的插件，研究Jenkins插件撰寫也是不錯的點子。
 
-
-
-
-最後附上本次實作的程式碼
-{% link webpack-dev-server-learning, https://github.com/SP12893678/webpack-dev-server-learning, https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/github.svg %}
