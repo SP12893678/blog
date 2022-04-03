@@ -1,4 +1,4 @@
-title: Gitlab + Jenkins 建置CI / CD流程
+title: GitLab + Jenkins 建置CI / CD流程
 description: 
 
 categories:
@@ -294,43 +294,47 @@ Slack插件可以透過建置完成發送通知至Slack上
 **設置Sonarqube Server**
 Jenkins需要知道Sonarqube Server的網址、權限才能串接
 
-首先到管理Jenkins選單頁，並點擊系統設置選項
+**步驟1：**首先到管理Jenkins選單頁，並點擊系統設置選項
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-menu.jpg)
 
-找到SonarQube servers區塊，新增sonarqube server
+**步驟2：**找到SonarQube servers區塊，新增sonarqube server
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-server.jpg)
 
+
+**步驟3：**填入SonarQube相關資訊
 * Name：自訂名稱 (辨識不同server用途)
 * Server URL：docker compose架設的sonarqube server的 URL
 * Server authentication token：sonarqube權限金鑰 (需在sonarqube取得金鑰)
 
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-server-setting.jpg)
 
-**取得sonarqube權限金鑰**
+**步驟3-1：**前往SonarQube頁面產生權限金鑰
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-sonarqube-security.jpg)
 
+**步驟3-2：**複製sonarqube權限金鑰
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-sonarqube-auth-token.jpg)
 
-**選擇權限驗證種類：Secret text**
+**步驟3-3：**設置sonarqube權限 (選擇權限驗證種類：Secret text)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-server-credential.jpg)
+
 
 **設置Sonarqube Scanner**
 Sonarqube Scanner幫助掃描專案程式碼
 
-在Jenkins管理頁面選擇全域工具設置
+**步驟1：**在Jenkins管理頁面選擇全域工具設置
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-scanner.jpg)
 
-新增Sonarqube Scanner，並選擇合適的版本
+**步驟2：**新增Sonarqube Scanner，並選擇合適的版本
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-scanner-install.jpg)
 <!-- endtab -->
 
 <!-- tab OWASP Dependency Check -->
 在這邊將設置OWASP Dependency Check的版本和名稱
 
-在Jenkins管理頁面選擇全域工具設置
+**步驟1：**在Jenkins管理頁面選擇全域工具設置
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-sonarqube-scanner.jpg)
 
-新增OWASP Dependency Check，並選擇合適的版本
+**步驟2：**新增OWASP Dependency Check，並選擇合適的版本
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-dependency-check-setting.jpg)
 
 <!-- endtab -->
@@ -338,19 +342,19 @@ Sonarqube Scanner幫助掃描專案程式碼
 <!-- tab Slack -->
 我們需要從Slack建立機器人，並且取得slack上的網域和金鑰
 
-在Slack新增Jenkins CI應用程式
+**步驟1：**在Slack新增Jenkins CI應用程式
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins.jpg)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins-install.jpg)
 
-選擇Jenkins機器人發通知的頻道
+**步驟2：**選擇Jenkins機器人發通知的頻道
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins-install-channel.jpg)
 
-Slack上詳細說明了接續設定，其中包含網域和權限
+**步驟3：**Slack上詳細說明了接續設定，其中包含網域和權限
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-slack-jenkins-setting.jpg)
 
 
-在Slack設置中要求我們填入工作區網址、權限、預設頻道/成員ID
-設定完成後可以點擊右下的Test Connection測試有無成功，若成功Jenkins bot將發送一則測試訊息至當初設定的Slack頻道上
+**步驟4：**在Slack設置中要求我們填入工作區網址、權限、預設頻道/成員ID
+**步驟5：**設定完成後可以點擊右下的Test Connection測試有無成功，若成功Jenkins bot將發送一則測試訊息至當初設定的Slack頻道上
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-plugin-slack-setting.jpg)
 
 測試後Jenkins機器人將發送一則測試消息在頻道上
@@ -363,10 +367,10 @@ Slack上詳細說明了接續設定，其中包含網域和權限
 ## 建立專案建置流程
 環境設定完了就可以正式進入建立專案建置流程啦！
 
-首先在Jenkins主頁點擊New Item創建項目
+**步驟1：**首先在Jenkins主頁點擊New Item創建項目
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-homepage-click-new-item.jpg)
 
-輸入項目名稱，這邊選擇Freestyle project(提供彈性UI設置)
+**步驟2：**輸入項目名稱，這邊選擇Freestyle project(提供彈性UI設置)
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-add-new-item.jpg)
 
 到設置頁面可以看到上方有6個選項
@@ -382,10 +386,10 @@ Slack上詳細說明了接續設定，其中包含網域和權限
 
 ### 設置程式碼管理(SCM)
 
-在程式碼管理必須設定Git repositories，填入專案網址以及專案權限
+**步驟1：**在程式碼管理必須設定Git repositories，填入專案網址以及專案權限
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm.jpg)
 
-專案權限設置中可以使用UserName with password種類，輸入GitLab/Github的帳密即可
+**步驟2：**專案權限設置中可以使用UserName with password種類，輸入GitLab/Github的帳密即可
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-setting-scm-credentials.jpg)
 
 權限設置好後，原先的紅字錯誤就消失啦
@@ -467,7 +471,7 @@ PS. 基本上在圖形介面上就有報告可以查看
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-free-style-project-run-notify-slack.jpg)
 
 在左側選單還有許多內容可以查看，還記得我們剛才設定的其他報告嗎?
-1. Console Output：ˋ整個建置的歷程
+1. Console Output：整個建置的歷程
 2. Coverage Report：專案覆蓋率報告 (Jacoco)
 3. Dependency-Check：專案依賴檢查報告
 
@@ -491,10 +495,10 @@ PS. 基本上在圖形介面上就有報告可以查看
 如果手動建置有成功的話，可以試試看透過Gitalb webhook觸發
 
 **GitLab webhook設定**
-首先到GitLab專案頁面上，選擇Setting -> Integrations -> Jenkins CI
+**步驟1：**首先到GitLab專案頁面上，選擇Setting -> Integrations -> Jenkins CI
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-gitlab-jenkins-webhook.jpg)
 
-這邊填上Jenkins url，注意是domain + port，不需要子路徑喔
+**步驟2：**這邊填上Jenkins url，注意是domain + port，不需要子路徑喔
 Project name填上Jenkins上新增項目的名稱
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-gitlab-jenkins-webhook-setting.jpg)
 
@@ -508,15 +512,15 @@ Project name填上Jenkins上新增項目的名稱
 2. 配置檔整合至git專案上，供開發人員在開發專案時即可了解建置流程
 
 **新增項目**
-在新增項目種選擇Pipeline
+**步驟1：**在新增項目種選擇Pipeline
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-add.jpg)
 
 
-新增後進入設定頁面，會發現Jenkins有提供部分UI設定，主要是給將Pipeline寫在Jenkins上的人使用的或者一些Pipeline設定的選擇，若選擇pipeline配置檔在Git專案上則需要切換選項
+新增後進入設定頁面，會發現Jenkins有提供部分UI設定，主要是給將Pipeline寫在Jenkins上的人使用的或者一些Pipeline設定的選擇，若**步驟2：**選擇pipeline配置檔在Git專案上則需要切換選項
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-setting-1.jpg)
 
 
-這邊只需要設置Git專案的資訊即可
+**步驟3：**這邊只需要設置Git專案的資訊即可
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-pipeline-setting-scm.jpg)
 
 ### 撰寫Jenkins pipeline配置檔
@@ -615,13 +619,13 @@ sudo apt-get install openjdk-8-jdk
 ```
 
 ### 新增節點
-在管理Jenkins頁面點擊管理節點
+**步驟1：**在管理Jenkins頁面點擊管理節點
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-add.jpg)
 
-新增節點
+**步驟2：**新增節點
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new.jpg)
 
-輸入節點名稱以及勾選類別
+**步驟3：**輸入節點名稱以及勾選類別
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/devops-cicd/devops-cicd-jenkins-node-new-1.jpg)
 
 1. Remote root directory：遠端根目錄，就像是Jenkins Home一樣會放置工作區的內容
