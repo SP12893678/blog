@@ -284,7 +284,33 @@ docker-compose -f docker-composeLE.yml up
 基本上我們在此可看到憑證申請過程，若失敗則會輸出相關錯誤訊息於終端機上
 
 ### 將Nginx伺服器設定改為SSL，並重新載入Nginx
-完成後訪問自己的域名看看有沒有成功開啟SSL憑證吧
+
+```bash
+server {
+    listen [::]:80;
+    listen 80;
+    server_name your_domain.com;
+    location ~ /.well-known/acme-challenge {
+        allow all;
+        root /var/www/certbot;
+    }
+    return 301 https://your_domain.com$request_uri;
+}
+server {
+    listen [::]:443 ssl http2;
+    listen 443 ssl http2;
+    server_name your_domain.com;
+    
+    ssl_certificate /etc/nginx/ssl/live/gcp12893678.tk/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/gcp12893678.tk/privkey.pem;
+}
+```
+
+完成後重新整理nginx伺服器
+```
+docker-compose restart
+```
+訪問自己的域名看看有沒有成功開啟SSL憑證吧
 
 ### 更新憑證容器，完成自動化更新SSL憑證
 還記得docker-compose.yml上有撰寫cerbot容器嗎，透過再次啟動下方指令，將首次申請用的容器替代即可
@@ -504,8 +530,33 @@ docker-compose -f docker-composeLE.yml up
 基本上我們在此可看到憑證申請過程，若失敗則會輸出相關錯誤訊息於終端機上
 
 ### 將Nginx伺服器設定改為SSL，並重新載入Nginx
-完成後訪問自己的域名看看有沒有成功開啟SSL憑證吧
 
+```bash
+server {
+    listen [::]:80;
+    listen 80;
+    server_name your_domain.com;
+    location ~ /.well-known/acme-challenge {
+        allow all;
+        root /var/www/certbot;
+    }
+    return 301 https://your_domain.com$request_uri;
+}
+server {
+    listen [::]:443 ssl http2;
+    listen 443 ssl http2;
+    server_name your_domain.com;
+    
+    ssl_certificate /etc/nginx/ssl/live/gcp12893678.tk/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/gcp12893678.tk/privkey.pem;
+}
+```
+
+完成後重新整理nginx伺服器
+```
+docker-compose restart
+```
+訪問自己的域名看看有沒有成功開啟SSL憑證吧
 ### 更新憑證容器，完成自動化更新SSL憑證
 還記得docker-compose.yml上有撰寫cerbot容器嗎，透過再次啟動下方指令，將首次申請用的容器替代即可
 
@@ -514,7 +565,5 @@ docker-compose up -d
 ```
 
 ## 結語
-看完可以發現並沒有什麼太複雜的概念，webpack就像一個容器讓我們組裝所需的內容, 而只要知道各個零件的用途與設置就可以添加各個需求。不過webpack依然還有須多可以研究的，例如考量網頁效能與體驗上如何最佳化編譯靜態資源將會是很重要的課題。
+透過Docker compose方式使我們無須手動安裝Nginx以及憑證服務，大部分透過設定即可。甚至今後只需要做好範本，就可以很便捷佈署。
 
-最後附上本次實作的程式碼
-{% link webpack-dev-server-learning, https://github.com/SP12893678/webpack-dev-server-learning, https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/github.svg %}
