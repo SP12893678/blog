@@ -15,7 +15,7 @@ keywords: ssl,dns,certbot,docker,docker compose
 date: 2022-09-06 12:00:00
 copyright_info: 此文章版權歸JUN-HONG所有，如有轉載，請註明來自原作者
 
-cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_webpack_webpack-dev-server.jpg
+cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_ssl-certbot-nginx-dockercompose.png
 ---
 
 ## 前言
