@@ -20,8 +20,6 @@
       
         <tags>
             
-            <tag> docker </tag>
-            
             <tag> ssl </tag>
             
             <tag> dns </tag>
@@ -31,6 +29,8 @@
             <tag> cloudflare </tag>
             
             <tag> google cloud </tag>
+            
+            <tag> docker </tag>
             
             <tag> docker compose </tag>
             
@@ -57,9 +57,9 @@
       
         <tags>
             
-            <tag> CI/CD </tag>
-            
             <tag> docker </tag>
+            
+            <tag> CI/CD </tag>
             
             <tag> docker-compose </tag>
             
