@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
 Sitemap: https://sp12893678.tk/sitemap.xml
 Sitemap: https://sp12893678.tk/sitemap.txt
