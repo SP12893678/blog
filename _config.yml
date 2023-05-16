@@ -105,6 +105,7 @@ theme: butterfly
 deploy:
   type: git
   repo: https://github.com/SP12893678/blog.git
+  ignore_hidden: false
 
 
 search:
