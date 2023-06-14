@@ -9,10 +9,10 @@ tags:
   - DevOps
 
 keywords: Docker, CI/CD, DevOps, GitLab
-date: 2023-5-16 12:00:00
+date: 2023-6-14 12:00:00
 copyright_info: 此文章版權歸JUN-HONG所有，如有轉載，請註明來自原作者
 
-cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/
+cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_gitlab-server-runner-docker.jpg
 ---
 
 ## 前言
@@ -37,6 +37,12 @@ GitLab CI Runner為提供GitLab 運行CI/CD作業的應用程式
     - 運行GitLab CI Runner容器
     - 註冊GitLab CI Runner
     - 查看該Project的Runner是否成功註冊
+- 測試GitLab CI Runner
+    - 於Repo中建立.gitlab-ci.yml持續整合設定檔
+    - 觸發CI/CD機制
+    - 查看GitLab CI/CD Pipelines狀態
+    - .gitlab-ci.yml設置Docker指令
+
 
 ## 環境準備
 範例中的作業系統採用Ubuntu 22.04版本，環境只要安裝Docker
@@ -137,30 +143,29 @@ https://docs.gitlab.com/omnibus/settings/smtp.html
 ### 申請Gmail應用程式密碼
 若想要使用Gmail SMTP服務，讓你的軟體可以用指定的gmail發信，但又不想要在系統/軟體輸入自己的gmail密碼。如此可於google帳戶中申請應用程式密碼
 
-#### 前往Google帳戶管理頁面
-
-如圖點擊紅框處的按鈕
-    
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-1.jpg)
-
-
-#### 到安全性頁面點擊兩步驟驗證，並進行相關設定
-
-{% note info flat %}
-💡透過兩步驟驗證使得之後不小心外洩密碼，google發現是異地登入時會需要手機驗證
-增加帳戶的安全性
-{% endnote %}
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-2.jpg)
+- 前往Google帳戶管理頁面
+    如圖點擊紅框處的按鈕
+        
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-1.jpg)
 
 
-#### 下拉到下方內容點擊紅框，前往應用程式密碼頁面
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-3.jpg)
+- 到安全性頁面點擊兩步驟驗證，並進行相關設定
 
-#### 選擇所需的產生密碼的應用程式與裝置
-- 我們的需求是SMTP也就郵件應用程式
-- 裝置可以自訂名稱。如GitLab server
-- 按產生按鈕就會顯示密碼拉
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-4.jpg)
+    {% note info flat %}
+    💡透過兩步驟驗證使得之後不小心外洩密碼，google發現是異地登入時會需要手機驗證
+    增加帳戶的安全性
+    {% endnote %}
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-2.jpg)
+
+
+- 下拉到下方內容點擊紅框，前往應用程式密碼頁面
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-3.jpg)
+
+- 選擇所需的產生密碼的應用程式與裝置
+    - 我們的需求是SMTP也就郵件應用程式
+    - 裝置可以自訂名稱。如GitLab server
+    - 按產生按鈕就會顯示密碼拉
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-4.jpg)
 
 ### 撰寫.env環境變數
 從docker-compose.yml中可以看到有被${}符號標記的為使用環境變數，SMTP_PASSWORD的值就是填寫剛才申請的應用程式密碼拉
@@ -201,26 +206,26 @@ Notify.test_email('your_email', 'title', 'content').deliver_now
 
 在使用者註冊上，GitLab有提供許多的設置選項，讓團隊可以根據需求設定
 
-#### 以root身分登入並前往admin頁面
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-5.jpg)
+- 以root身分登入並前往admin頁面
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-5.jpg)
 
-#### 在側邊選單點擊Settings→General
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-6.jpg)
+- 在側邊選單點擊Settings→General
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-6.jpg)
 
-#### 下拉至Sign-up restrictions
+- 下拉至Sign-up restrictions
 
-這邊是註冊的限制相關設定，如：
+    這邊是註冊的限制相關設定，如：
 
-1. 否允許註冊
-2. 是否需要管理者同意新註冊用戶
-3. 信件確認設定 (不強制使用者信件確認、可立即登入，但三天內需信件確認、登入前必須完成信件確認)
-4. 密碼最低長度
-5. 允許或拒絕來自哪些domain的註冊
-6. 設定註冊信箱必須符合設置的regex格式
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-7.jpg)
+    1. 否允許註冊
+    2. 是否需要管理者同意新註冊用戶
+    3. 信件確認設定 (不強制使用者信件確認、可立即登入，但三天內需信件確認、登入前必須完成信件確認)
+    4. 密碼最低長度
+    5. 允許或拒絕來自哪些domain的註冊
+    6. 設定註冊信箱必須符合設置的regex格式
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-7.jpg)
 
 
-完成設定後，就可以去嘗試使用者註冊啦
+    完成設定後，就可以去嘗試使用者註冊啦
 
 
 
@@ -271,63 +276,129 @@ docker compose up
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-11.jpg)
 
 ### 註冊GitLab CI Runner
-1. 進入runner容器內
+- 進入runner容器內
 
-```bash
-docker exec -it gitlab_runner bash
-```
+    ```bash
+    docker exec -it gitlab_runner bash
+    ```
 
-1. 設置信任的網站SSL憑證
+- 設置信任的網站SSL憑證
 
-若嘗試訪問的網站具有已過期或來自不受信任的頒發機構的 SSL 證書，可能會出現下圖問題
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-12.jpg)
+    若嘗試訪問的網站具有已過期或來自不受信任的頒發機構的 SSL 證書，可能會出現下圖問題
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-12.jpg)
 
-因此註冊前先將gitlab server網站的憑證加入至信任內
+    因此註冊前先將gitlab server網站的憑證加入至信任內
 
-```yaml
-mkdir /etc/gitlab-runner/certs
-openssl s_client -showcerts -connect your_domain:443 servername your_domain < /dev/null 2>/dev/null | openssl x509 -outform PEM > /etc/gitlab-runner/certs/your_domain.crt
-```
+    ```yaml
+    mkdir /etc/gitlab-runner/certs
+    openssl s_client -showcerts -connect your_domain:443 servername your_domain < /dev/null 2>/dev/null | openssl x509 -outform PEM > /etc/gitlab-runner/certs/your_domain.crt
+    ```
 
-1. 執行runner註冊指令
+- 執行runner註冊指令
 
-```bash
-gitlab-runner register
-```
-註冊中會要求輸入：
+    ```bash
+    gitlab-runner register
+    ```
+    註冊中會要求輸入：
 
-1. GitLab server URL：由於docker-compose.yml有先設定了，這邊默認即可
-2. 註冊Runner的token：貼上剛才指令的token
-3. 該Runner的tags：空白即可
-4. 維護的資訊：空白即可
-5. 執行器：docker
-6. 預設docker image：alpine:latest
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-13.jpg)
-{% note info flat %}
-💡Docker executor 使用 Docker 引擎創建一個新的容器來執行作業。每個作業都在一個獨立的容器中運行，可以指定不同的容器鏡像和運行環境。這種執行者適用於需要隔離環境或依賴特定容器鏡像的作業。
-{% endnote %}
+    1. GitLab server URL：由於docker-compose.yml有先設定了，這邊默認即可
+    2. 註冊Runner的token：貼上剛才指令的token
+    3. 該Runner的tags：空白即可
+    4. 維護的資訊：空白即可
+    5. 執行器：docker
+    6. 預設docker image：alpine:latest
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-13.jpg)
+    {% note info flat %}
+    💡Docker executor 使用 Docker 引擎創建一個新的容器來執行作業。每個作業都在一個獨立的容器中運行，可以指定不同的容器鏡像和運行環境。這種執行者適用於需要隔離環境或依賴特定容器鏡像的作業。
+    {% endnote %}
 
 
-1. 查看設定檔config.toml
+- 查看設定檔config.toml
 
-可以看到剛才的註冊資訊寫入至該設定檔中，後續更新與檢查可使用
+    可以看到剛才的註冊資訊寫入至該設定檔中，後續更新與檢查可使用
 
-```yaml
-cat config.toml
-```
-![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-14.jpg)
+    ```yaml
+    cat config.toml
+    ```
+    ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-14.jpg)
 
-1. 更新config.toml配置檔設定
+- 更新config.toml配置檔設定
 
-config.toml配置檔中volumes部分需更新為以下，如此執行docker相關指令時才可運作
+    config.toml配置檔中volumes部分需更新為以下，如此執行docker相關指令時才可運作
 
-```yaml
-volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache"]
-```
+    ```yaml
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache"]
+    ```
 
 ### 查看該Project的Runner是否成功註冊
 重整頁面，可發現下圖紅框處有可使用的runner
 ![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-15.jpg)
 
+## 測試GitLab CI Runner
+
+上一節建立GitLab CI Runner後，在設置頁面雖然有可使用的Runner，但仍需要檢驗CI/CD流程是否會觸發進行任務需求
+
+### 於Repo中建立.gitlab-ci.yml持續整合設定檔
+
+在個人專案中，建立.gitlab-ci.yml，其中內容如下：
+
+這是簡易的運行範例
+
+```bash
+stages:
+- build
+build:
+  stage: build
+  tags:
+   - master
+  script:
+    - echo "Hello GitLab Runner"
+```
+{% note info flat %}
+💡tags為指定執行的runner，在最初runner新增設定時有提到
+{% endnote %}
+
+### 觸發CI/CD機制
+
+接著就推送版本紀錄即可觸發CI/CD機制
+
+上述版本沒有任何限制，若期望只在master分支或指定分支版本紀錄時觸發也可以額外設置
+
+或者是merge request事件觸發等規則設定
+
+### 查看GitLab CI/CD Pipelines狀態
+
+觸發後在GitLab CI/CD Pipelines可以查看目前的任務
+
+狀態前期會有pending → running
+
+pending代表準備將任務指派給runner
+
+running代表runner已經在執行CI/CD任務了
+
+{% note info flat %}
+💡若一直處於pending狀態可點擊前去查看原因，可能是沒有可用的runner
+{% endnote %}
+
+![Untitled](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/gitlab-server-16.jpg)
+
+### .gitlab-ci.yml設置Docker環境
+
+可以看到我的pipeline中有幾次的失敗，其原因為若欲在CI/CD中使用docker指令，需要設置image為docker
+
+```bash
+stages:
+- build
+
+build:
+  stage: build
+  image: docker
+  tags:
+   - master
+  script:
+    - echo "Hello GitLab Runner2"
+    - docker -v
+```
+
 ## 結語
-本篇大致敘述了borg備份工具的使用，自動化異地備份使資料不會放在同一個籃子上而毀壞，大幅增加災難恢復的能力。此外，在災難恢復中有著2個關鍵的指標RTO (Recovery Time Objective, 復原時間目標)和RPO (Recovery Point Objective, 復原點目標)，期望復原點目標越近，備份的頻率就相對高，而期望復原時間目標越快則需要更快速的故障轉移(failover)策略。除了Backup and Restore，Pilot Light、Warm Standby、Multi-site亦是未來可研究的方向。
+本篇大致敘述以docker建置GitLab Server與GitLab Runner的方法，並進行了簡易的CI測試Runner運作狀態。透過容器化方式可以使得CI/CD任務需求中更容易達成所需的環境。本篇在gitlab ci設置檔屬於簡易使用，未來可詳細探討設置的細節。
