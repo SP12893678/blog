@@ -81,11 +81,12 @@ newgrp docker
 ```
 
 ## 建置GitLab Server
-### 撰寫Docker Compose.yml設置運行容器服務
+### 撰寫docker-compose.yml設置運行容器服務
 gitlab server有許多的環境配置可以設定，其中本篇以SSL憑證設置與SMTP寄信設定做為分享內容
 
 {% tabs GitLab Server Docker Compose.yml設置 %}
 <!-- tab 自備SSL憑證 & Gmail SMTP設定 -->
+- 撰寫docker-compose.yml
 ```bash
 version: '2'
 services:
@@ -126,10 +127,62 @@ services:
           cpus: '3'
 ```
 
+- 建立ssl資料夾
+```
+mkdir ssl
+```
+
+- 將自備的憑證放入ssl資料夾，並取名為your_domain.crt、your_domain.key格式
+
 <!-- endtab -->
 
 <!-- tab 自動letsencrypt SSL憑證 & Gmail SMTP設定 -->
+- 撰寫docker-compose.yml
+```bash
+version: '2'
+services:
+  web:
+    image: 'gitlab/gitlab-ee:latest'
+    container_name: gitlab
+    restart: always
+    hostname: 'your_domain'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://your_domain'
+        letsencrypt['enable'] = true
+	    letsencrypt['auto_renew'] = true
+		letsencrypt['contact_emails'] = ['your_email']
+        letsencrypt['auto_renew_hour'] = "12"
+		letsencrypt['auto_renew_minute'] = "30"
+		letsencrypt['auto_renew_day_of_month'] = "*/7"
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = "smtp.gmail.com"
+        gitlab_rails['smtp_port'] = 587
+        gitlab_rails['smtp_user_name'] = "${SMTP_EMAIL}"
+        gitlab_rails['smtp_password'] = "${SMTP_PASSWORD}"
+        gitlab_rails['smtp_domain'] = "smtp.gmail.com"
+        gitlab_rails['smtp_authentication'] = "login"
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        gitlab_rails['smtp_tls'] = false
+        gitlab_rails['smtp_openssl_verify_mode'] = 'peer'
+      GITLAB_ROOT_PASSWORD: ${GITLAB_ROOT_PASSWORD}
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - './config:/etc/gitlab'
+      - './logs:/var/log/gitlab'
+      - './data:/var/opt/gitlab'
+    privileged: true
+    shm_size: '256m'
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+```
 
+其中letsencrypt即為免費自動憑證的設置
 
 <!-- endtab -->
 {% endtabs %}
