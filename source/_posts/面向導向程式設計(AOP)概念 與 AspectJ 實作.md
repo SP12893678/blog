@@ -12,7 +12,7 @@ keywords: AOP, AspectJ, Maven
 date: 2023-6-17 12:00:00
 copyright_info: 此文章版權歸JUN-HONG所有，如有轉載，請註明來自原作者
 
-cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_gitlab-server-runner-docker.jpg
+cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_aop.jpg
 ---
 
 ## 前言
