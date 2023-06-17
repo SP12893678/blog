@@ -257,7 +257,7 @@ borg create                         \
     --exclude 'home/*/.cache/*'     \
     --exclude 'var/tmp/*'           \
                                     \
-    '{hostname}-{now}'              \
+    ::'{hostname}-{now}'              \
     /etc                            \
     /home                           \
     /root                           \
@@ -274,7 +274,7 @@ info "Pruning repository"
 
 borg prune                              \
     --list                              \
-    --match-archives 'sh:{hostname}-*'  \
+    --glob-archives '{hostname}-*'  \
     --show-rc                           \
     --keep-daily    7                   \
     --keep-weekly   4                   \
