@@ -40,6 +40,12 @@ cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_aop.jpg
     4. 異常處理 (The handling of an exception)
     5. 類別與物件的初始化 (The initialization of a class or object)
     
+    其實就是面向中操作時可以介入的點，上述的關注點可以如以下用法：
+    1. 在某個函式執行前，要先執行權限驗證功能，確定使用者有無權限
+    2. 某個變數被賦值更新內容後，要執行重新渲染，讓畫面同步
+    3. 當發生異常時，執行日誌紀錄
+    4. 當某個物件初始化前，執行檢查資料有無設定完善
+
     具題撰寫格式如下：
     
     ```bash
@@ -493,6 +499,15 @@ public class MyAspect {
     ```java
     mvn aspectj:compile exec:java
     ```
+
+    執行結果
+    Before是指在切入點前添加行為
+    可以發現原先無面向切入預期只有輸出Hello World!，但藉由面向切入，指定在greet函式前執行我們添加的行為。
+    因此先輸出了Hello Aspect- Before!
+    ```java
+    Hello Aspect- Before!
+    Hello World!
+    ```
     
 - Around advice
     
@@ -518,6 +533,12 @@ public class MyAspect {
     ```java
     mvn aspectj:compile exec:java
     ```
+    執行結果
+    Around為覆寫切入點的切入行為advice，因此執行結果只有切入執行的部分：Hello Aspect - Around!。
+    原先的Hello World!則被覆寫掉了
+    ```java
+    Hello Aspect - Around!
+    ```
     
 - after advice
     
@@ -542,6 +563,14 @@ public class MyAspect {
     
     ```java
     mvn aspectj:compile exec:java
+    ```
+    執行結果
+    After是指在切入點後添加行為
+    可以發現原先無面向切入預期只有輸出Hello World!，但藉由面向切入，指定在greet函式後執行我們添加的行為。
+    因此先輸出了Hello Aspect - After!
+    ```java
+    Hello World!
+    Hello Aspect - After!
     ```
     
 
@@ -614,6 +643,11 @@ public class MyAspect {
     import org.aspectj.lang.annotation.Before;
     @Aspect
     public class MyAspect {
+
+        @Pointcut("execution(* com.mycompany.app.App.greet())")
+        private void executeAppGreet(){
+
+        }
     
         @Before("executeAppGreet()")
         public void beforeAppGreet() {
@@ -647,7 +681,7 @@ public class MyAspect {
 
 以下為採用其中幾種的範例，可以看到
 
-1. * com.mycompany.app.App.greet的*符號代表wildcards容許任何回傳類型
+1. '* com.mycompany.app.App.greet'的*符號代表wildcards容許任何回傳類型
 2. com.mycompany.app.App.greet(..)的..符號代表wildcards容許任何參數(不論有無或多少個)
 3. !execution(* com.mycompany.app.App.greet())的!符號代表不要對該連接點切入
 4. 整體使用 && 串接表示條件都相符才是切入點
@@ -734,7 +768,8 @@ App is hibernating
 
 ## AspectJ支援的相關資訊
 
-在https://www.eclipse.org/aspectj/doc/released/quick5.pdf這項文件中，整理了AsepctJ的語法
+在下面連結的這項文件中，整理了AsepctJ的語法，有需求可以詳細察看
+https://www.eclipse.org/aspectj/doc/released/quick5.pdf
 
 ### Pointcut形式
 
