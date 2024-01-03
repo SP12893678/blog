@@ -1,4 +1,4 @@
-title: GitLab + Jenkins 建置CI / CD流程
+title: GitLab + Jenkins 建置CICD流程
 description: 
 
 categories:

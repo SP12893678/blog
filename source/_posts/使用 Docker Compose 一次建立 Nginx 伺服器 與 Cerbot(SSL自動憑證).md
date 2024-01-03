@@ -1,4 +1,4 @@
-title: 使用 Docker Compose 一次建立 Nginx 伺服器 & Cerbot(SSL自動憑證)
+title: 使用 Docker Compose 一次建立 Nginx 伺服器 與 Cerbot(SSL自動憑證)
 description: 網路發展迅速，人們使用網際網路於網頁上獲取新知，網站之間傳輸需經由安全加密以避免有心人士從中做壞，因此SSL（Secure Sockets Layer）憑證是一種用於網站的安全證書，它可以保證在傳送數據時保持安全性。通常SSL憑證來源可以由SSL憑證供應商取得，不過可能需要付出一定非用。當然也有免費的來源，而免費的憑證服務有效期限為90天，一段時間就得重複同樣操作其實浪費時間與心力，若有自動化的方式何不為樂呢。因此這次帶來容器化方式一次將所有服務設置完成。
 
 categories:

@@ -13,8 +13,8 @@ timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://sp12893678.tk
-permalink: posts/:hash/
+url: https://sp12893678.net
+permalink: posts/:title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -120,3 +120,7 @@ sitemap:
   rel: false
   tags: false
   categories: false
+
+nofollow:
+    enable: true
+urlforgoogle: https://sp12893678.net/

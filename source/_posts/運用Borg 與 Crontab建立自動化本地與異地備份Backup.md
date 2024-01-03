@@ -1,4 +1,4 @@
-title: 運用Borg & Crontab建立自動化本地與異地備份Backup
+title: 運用Borg 與 Crontab建立自動化本地與異地備份Backup
 description: 
 
 categories:

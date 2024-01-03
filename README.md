@@ -1,5 +1,5 @@
 # My blog
-Blog link: https://sp12893678.tk/
+Blog link: https://sp12893678.net/
 
 Tools
 ---
