@@ -8,4 +8,4 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: https://sp12893678.tk/sitemap.xml
+Sitemap: https://sp12893678.net/sitemap.xml

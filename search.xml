@@ -175,11 +175,11 @@
             
             <tag> CI/CD </tag>
             
+            <tag> jenkins </tag>
+            
             <tag> docker </tag>
             
             <tag> docker-compose </tag>
-            
-            <tag> jenkins </tag>
             
             <tag> sonarqube </tag>
             
