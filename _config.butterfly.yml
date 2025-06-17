@@ -79,7 +79,7 @@ favicon: /img/logo/icon-128x128.png
 
 # Avatar (頭像)
 avatar:
-  img: /img/avatar.jpg
+  img: /img/avatar.png
   effect: false
 
 # Disable all banner image
