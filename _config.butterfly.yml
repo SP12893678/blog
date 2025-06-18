@@ -641,7 +641,7 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/SP12893678
   card_announcement:
     enable: false
     content: This is my Blog
