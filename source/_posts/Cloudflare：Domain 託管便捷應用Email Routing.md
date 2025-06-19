@@ -10,15 +10,15 @@ tags:
   - Email Routing
 
 keywords: Network, DNS, Cloudflare, Email Routing
-date: 2025-6-17 12:00:00
+date: 2025-2-17 12:00:00
 copyright_info: 此文章版權歸JUN-HONG所有，如有轉載，請註明來自原作者
 
-cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email-routing/banner_traefik-mkcert
+cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_cloudflare-email-routing.png
 ---
 
 ## 前言
 
-擁有一組自己的域名（Domain）可以實現很多應用，最簡易的應用是將指定的域名路由到架設的服務，讓使用者可以透過域名訪問到服務。Cloudflare 提供域名託管，並提供各種整合性質服務，本次要分享2種服務與實務上的應用。
+擁有一組自己的域名（Domain）可以實現很多應用，最簡易的應用是將指定的域名路由到架設的服務，讓使用者可以透過域名訪問到服務。Cloudflare 提供域名託管，並提供各種整合性質服務，本次要分享信件服務的應用。
 
 ## 章節重點
 
@@ -114,13 +114,3 @@ cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email
 第三個帳號成功收到信件啦！
 
 ![image.png](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email-routing/image%2014.png)
-
-## Cloudflare Tunnels 分享Local臨時測試/Demo服務
-
-### Zero Trust Networks **Tunnels**
-
-![image.png](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email-routing/image%2015.png)
-
-![image.png](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email-routing/image%2016.png)
-
-![image.png](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email-routing/image%2017.png)
