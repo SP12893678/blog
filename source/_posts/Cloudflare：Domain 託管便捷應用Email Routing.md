@@ -68,12 +68,10 @@ cover: https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/banner_cloudflar
 
 ![image.png](https://cdn.jsdelivr.net/gh/sp12893678/blog@gh-pages/img/cloudflare-email-routing/image%206.png)
 
-<aside>
-💡
-
+{% note info flat no-icon %}
 到這步驟我們就能讓只要是發送到 @hairybear.me 的信件，都會被轉發到我自己的Gmail信箱中
+{% endnote %}
 
-</aside>
 
 ### Gmail接收者設定轉發對象與條件
 
